@@ -2,12 +2,50 @@ $primary-color: rgb(204, 194, 156);
 
 html {
     box-sizing: border-box;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 .box {
     background-color: $primary-color;
     padding: 1rem;
     margin: 1rem;
     border: 1px solid black;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    background-color: #da9696;
+}
+.box {
+    position: relative;
+    padding-top: 5rem;
+}
+.box_title {
+    font-size: 1rem;
+    margin: 0;
+    background-color: green;
+    border: 1px solid black;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    text-align: center;
+    padding: 0;
+}
+.header {
+    grid-area: header;
+    background-color: #3d856d;
+}
+.main {
+    grid-area: main;
+    background-color: #f4a261;
+}
+.footer {
+    grid-area: footer;
+    background-color: #2a9d8f;
 }
 
 @media only screen and (max-width: 767px) {
@@ -17,7 +55,7 @@ html {
 }
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
     main {
-        width: 91.6%;
+        width: 100%;
     }
     footer {
         background-color: $primary-color;
@@ -25,7 +63,7 @@ html {
 }
 @media only screen and (min-width: 1024px) {
     main {
-        width: 66.6%;
+        width: 100%;
     }
     footer {
         background-color: $primary-color;
