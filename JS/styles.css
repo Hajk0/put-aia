@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.book-list {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    background-color: rgb(198, 159, 235);
+    text-align: center;
+}
+.list-description {
+    background-color: rgb(178, 223, 178);
+    width: 100%;
+}
+.list-row {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.list-item {
+    margin: 0 4px;
+    padding: 4px;
+    background-color: rgb(167, 72, 255);
+    width: 100%;
+}
