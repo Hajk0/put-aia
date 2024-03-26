@@ -1,9 +1,12 @@
 console.log('Hello World!');
 
 const addBookButton = document.getElementById('add-book');
+let counter = 0;
 
 addBookButton.addEventListener('click', () => {
     console.log('Button clicked!');
+    counter++;
+    console.log(counter);
     const list = document.getElementById('book-list');
 
     const listRow = document.createElement("div");
@@ -15,6 +18,12 @@ addBookButton.addEventListener('click', () => {
     listItem2.classList.add('list-item');
     let listItem3 = document.createElement("div");
     listItem3.classList.add('list-item');
+    colorRows();
+    if (counter % 2 === 1) {
+        listItem1.classList.add('grey');
+        listItem2.classList.add('grey');
+        listItem3.classList.add('grey');
+    }
     let authorInput = document.createElement("input");
     let titleInput = document.createElement("input");
     let editButton = document.createElement("button");
@@ -62,6 +71,19 @@ addBookButton.addEventListener('click', () => {
     removeButton.addEventListener('click', () => {
         console.log('Remove button clicked!');
         list.removeChild(listRow);
+        counter--;
+        for (let i = 0; i < list.children.length; i++) {
+            let row = list.children[i];
+            if (i % 2 === 0) {
+                for (let j = 0; j < row.children.length; j++) {
+                    row.children[j].classList.remove('grey');
+                }
+            } else {
+                for (let j = 0; j < row.children.length; j++) {
+                    row.children[j].classList.add('grey');
+                }
+            }
+        }
     });
 
     listRow.appendChild(listItem1);
@@ -70,3 +92,19 @@ addBookButton.addEventListener('click', () => {
 
     list.appendChild(listRow);
 });
+
+function colorRows() {
+    const list = document.getElementById('book-list');
+    for (let i = 0; i < list.children.length; i++) {
+        let row = list.children[i];
+        if (i % 2 === 0) {
+            for (let j = 0; j < row.children.length; j++) {
+                row.children[j].classList.remove('grey');
+            }
+        } else {
+            for (let j = 0; j < row.children.length; j++) {
+                row.children[j].classList.add('grey');
+            }
+        }
+    }
+}
