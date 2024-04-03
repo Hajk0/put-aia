@@ -100,6 +100,7 @@ body {
     align-items: center;
     gap: 4px;
     margin-top: 1rem;
+    border-top: 2px solid black;
 }
 .burger-menu {
     width: 80px;
@@ -161,9 +162,6 @@ body {
     main {
         width: 100%;
     }
-    footer {
-        background-color: $primary-color;
-    }
     .grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -184,9 +182,6 @@ body {
 @media only screen and (min-width: 1024px) {
     main {
         width: 100%;
-    }
-    footer {
-        background-color: $primary-color;
     }
     .grid {
         display: grid;
