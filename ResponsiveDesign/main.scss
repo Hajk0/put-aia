@@ -174,7 +174,7 @@ body {
     .box1 {
         grid-column: span 2;
         .box_title {
-            width: calc(25% - 1rem);
+            width: calc(25% - 0.5rem);
         }
     }
     .container {
