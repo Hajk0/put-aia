@@ -18,7 +18,7 @@ addBookButton.addEventListener('click', () => {
     listItem2.classList.add('list-item');
     let listItem3 = document.createElement("div");
     listItem3.classList.add('list-item');
-    colorRows();
+    //colorRows();
     if (counter % 2 === 1) {
         listItem1.classList.add('grey');
         listItem2.classList.add('grey');
