@@ -8,4 +8,9 @@ $(function () {
 });
 
 function createList(data) {
+    var list = $('<ul></ul>');
+    $.each(data.Guitars.Guitar, function(index, value) {
+        list.append('<li>' + value.Brand + ' - ' + value.Model + '</li>');
+    });
+    $('body').append(list);
 }
