@@ -11,7 +11,7 @@ function List() {
         }
     )
     const [people, setPeople] = useState(data.people)
-    console.log(people)
+    const [sort, setSort] = useState('default')
 
     const handleAdd = () => {
         const newPerson = {
@@ -35,10 +35,38 @@ function List() {
         setPeople(newPeople)
     }
 
+    const handleSortChange = (event) => {
+        const selectedSort = event.target.value
+        setSort(selectedSort)
+        console.log(sort)
+        if (selectedSort === 'name a-z') {
+            const sortedPeople = people.sort((a, b) => a.name.localeCompare(b.name))
+            setPeople(sortedPeople)
+        } else if (selectedSort === 'name z-a') {
+            const sortedPeople = people.sort((a, b) => b.name.localeCompare(a.name))
+            setPeople(sortedPeople)
+        } else if (selectedSort === 'age asc') {
+            const sortedPeople = people.sort((a, b) => a.age - b.age)
+            setPeople(sortedPeople)
+        } else if (selectedSort === 'age desc') {
+            const sortedPeople = people.sort((a, b) => b.age - a.age)
+            setPeople(sortedPeople)
+        } else if (selectedSort === 'city a-z') {
+            const sortedPeople = people.sort((a, b) => a.city.localeCompare(b.city))
+            setPeople(sortedPeople)
+        } else if (selectedSort === 'city z-a') {
+            const sortedPeople = people.sort((a, b) => b.city.localeCompare(a.city))
+            setPeople(sortedPeople)
+        } else {
+            setPeople(people)
+        }
+        console.log(people)
+    }
+
   return (
         <>
             <div className="input-group">
-                <label for="name-input">Name</label>
+                <label htmlFor="name-input">Name</label>
                 <input
                     type="text"
                     value={input.name}
@@ -50,7 +78,7 @@ function List() {
                         }
                     )}
                 />
-                <label for="age-input">Age</label>
+                <label htmlFor="age-input">Age</label>
                 <input
                     type="text"
                     value={input.age}
@@ -62,7 +90,7 @@ function List() {
                         }
                     )}
                 />
-                <label for='input-city'>City</label>
+                <label htmlFor='input-city'>City</label>
                 <input
                     type="text"
                     value={input.city}
@@ -77,7 +105,40 @@ function List() {
             </div>
 
             <button onClick={handleAdd}>Add</button>
-            <ul>
+            <div className="list-header">
+                <select 
+                    id='name-select'
+                    value={sort}
+                    onChange={handleSortChange}
+                    className="header-item"
+                >
+                    <option value="default">Name</option>
+                    <option value='name a-z'>Name A-Z</option>
+                    <option value='name z-a'>Name Z-A</option>
+                </select>
+                <select 
+                    id='age-select'
+                    value={sort}
+                    onChange={handleSortChange}
+                    className="header-item"
+                >
+                    <option value="default">Age</option>
+                    <option value='age asc'>Age asc</option>
+                    <option value='age desc'>Age desc</option>
+                </select>
+                <select 
+                    id='city-select'
+                    value={sort}
+                    onChange={handleSortChange}
+                    className="header-item"
+                >
+                    <option value="default">City</option>
+                    <option value='city a-z'>City A-Z</option>
+                    <option value='city z-a'>City Z-A</option>
+                </select>
+                <div className="header-item">Actions</div>
+            </div>
+            <ul className='list'>
                 {
                     people.map(person => (
                         <li key={person.id} className="list-item">

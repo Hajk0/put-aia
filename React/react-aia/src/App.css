@@ -21,12 +21,13 @@
 .list-item {
   background-color: #61dafbaa;
   padding: 1em;
-  list-style-type: none;
+  /*list-style-type: none;*/
   display: flex;
   justify-content: space-between;
   align-items: center;
   border: 1px solid #000000;
   min-width: 400px;
+  list-style: none;
 }
 
 .list-item:nth-child(odd) {
@@ -41,4 +42,26 @@
   display: flex;
   flex-direction: column;
   margin: 1em;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1em;
+  background-color: #15424e;
+  border: 1px solid #000000;
+  margin-top: 30px;
+}
+
+.list {
+  padding: 0;
+  margin: 0;
+}
+
+.header-item {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: transparent;
 }
