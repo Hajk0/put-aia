@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import data from '../data/data.json'
+import AddForm from './addForm/addForm'
 
 function List() {
     const [input, setInput] = useState(
@@ -57,6 +58,12 @@ function List() {
         } else if (selectedSort === 'city z-a') {
             const sortedPeople = people.sort((a, b) => b.city.localeCompare(a.city))
             setPeople(sortedPeople)
+        } else if (selectedSort === 'rating asc') {
+            const sortedPeople = people.sort((a, b) => a.rating - b.rating)
+            setPeople(sortedPeople)
+        } else if (selectedSort === 'rating desc') {
+            const sortedPeople = people.sort((a, b) => b.rating - a.rating)
+            setPeople(sortedPeople)
         } else {
             setPeople(people)
         }
@@ -65,46 +72,8 @@ function List() {
 
   return (
         <>
-            <div className="input-group">
-                <label htmlFor="name-input">Name</label>
-                <input
-                    type="text"
-                    value={input.name}
-                    id="name-input"
-                    onChange={e => setInput(
-                        {
-                            ...input,
-                            name: e.target.value
-                        }
-                    )}
-                />
-                <label htmlFor="age-input">Age</label>
-                <input
-                    type="text"
-                    value={input.age}
-                    id='age-input'
-                    onChange={e => setInput(
-                        {
-                            ...input,
-                            age: e.target.value
-                        }
-                    )}
-                />
-                <label htmlFor='input-city'>City</label>
-                <input
-                    type="text"
-                    value={input.city}
-                    id='input-city'
-                    onChange={e => setInput(
-                        {
-                            ...input,
-                            city: e.target.value
-                        }
-                    )}
-                />
-            </div>
+            <AddForm people={people} setPeople={setPeople} />
 
-            <button onClick={handleAdd}>Add</button>
             <div className="list-header">
                 <select 
                     id='name-select'
@@ -136,6 +105,17 @@ function List() {
                     <option value='city a-z'>City A-Z</option>
                     <option value='city z-a'>City Z-A</option>
                 </select>
+                <div className="header-item">Photo</div>
+                <select
+                    id='rating-select'
+                    value={sort}
+                    onChange={handleSortChange}
+                    className="header-item"
+                >
+                    <option value="default">Rating</option>
+                    <option value='rating asc'>Rating asc</option>
+                    <option value='rating desc'>Rating desc</option>
+                </select>
                 <div className="header-item">Actions</div>
             </div>
             <ul className='list'>
@@ -145,6 +125,10 @@ function List() {
                             <div className="item">{person.name}</div>
                             <div className="item">{person.age}</div>
                             <div className="item">{person.city}</div>
+                            <div className="item">
+                                <img className='photo' src={person.photo} alt={person.name + 's photo'} />
+                            </div>
+                            <div className='item'>{person.rating}</div>
                             <div className="item">
                                 <button onClick={() => handleDelete(person.id)}>delete</button>
                                 <button>edit</button>

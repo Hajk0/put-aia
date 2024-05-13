@@ -4,31 +4,41 @@
             "id": 0,
             "name": "John",
             "age": 30,
-            "city": "New York"
+            "city": "New York",
+            "photo": "./src/images/default.jpg",
+            "rating": "3"
         },
         {
             "id": 1,
             "name": "Jane",
             "age": 25,
-            "city": "Los Angeles"
+            "city": "Los Angeles",
+            "photo": "./src/images/pogchamp.png",
+            "rating": "4"
         },
         {
             "id": 2,
             "name": "Jim",
             "age": 40,
-            "city": "Chicago"
+            "city": "Chicago",
+            "photo": "./src/images/cmonbruh.png",
+            "rating": "3"
         },
         {
             "id": 3,
             "name": "Jill",
             "age": 35,
-            "city": "Houston"
+            "city": "Houston",
+            "photo": "./src/images/pepe.jpg",
+            "rating": "1"
         },
         {
             "id": 4,
             "name": "Jack",
             "age": 50,
-            "city": "Philadelphia"
+            "city": "Philadelphia",
+            "photo": "./src/images/biblethump.avif",
+            "rating": "1"
         }
     ]
 }
