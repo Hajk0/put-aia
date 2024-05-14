@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import data from '../data/data.json'
 import AddForm from './addForm/addForm'
+import EditForm from './addForm/editForm'
 import Search from './search/search'
 
 function List() {
@@ -16,27 +17,15 @@ function List() {
     const [sort, setSort] = useState('default')
     const [search, setSearch] = useState('')
     const [searchBy, setSearchBy] = useState('name')
-
-    const handleAdd = () => {
-        const newPerson = {
-            id: people.length + 1,
-            name: input.name,
-            age: input.age,
-            city: input.city,
-        }
-        setPeople([...people, newPerson])
-        setInput(
-            {
-                name: '',
-                age: '',
-                city: '',
-            }
-        )
-    }
+    const [editingId, setEditingId] = useState(null)
 
     const handleDelete = (id) => {
         const newPeople = people.filter(person => person.id !== id)
         setPeople(newPeople)
+    }
+
+    const handleEdit = (id) => {
+        setEditingId(id)
     }
 
     const handleSortChange = (event) => {
@@ -132,17 +121,21 @@ function List() {
                             searchBy === 'age' && person.age.toString().includes(search)
                         ) ? (
                             <li key={person.id} className="list-item">
-                                <div className="item">{person.name}</div>
-                                <div className="item">{person.age}</div>
-                                <div className="item">{person.city}</div>
-                                <div className="item">
-                                    <img className='photo' src={person.photo} alt={person.name + 's photo'} />
-                                </div>
-                                <div className='item'>{person.rating}</div>
-                                <div className="item">
-                                    <button onClick={() => handleDelete(person.id)}>delete</button>
-                                    <button>edit</button>
-                                </div>
+                                {editingId === person.id ? <EditForm people={people} setPeople={setPeople} id={person.id} setEditingId={setEditingId} /> : (
+                                    <>
+                                        <div className="item">{person.name}</div>
+                                        <div className="item">{person.age}</div>
+                                        <div className="item">{person.city}</div>
+                                        <div className="item">
+                                            <img className='photo' src={person.photo} alt={person.name + 's photo'} />
+                                        </div>
+                                        <div className='item'>{person.rating}</div>
+                                        <div className="item">
+                                            <button onClick={() => handleDelete(person.id)}>delete</button>
+                                            <button onClick={() => handleEdit(person.id)}>edit</button>
+                                        </div>
+                                    </>
+                                )}
                             </li>
                         ) : null
                     ))
