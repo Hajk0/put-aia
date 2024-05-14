@@ -63,7 +63,7 @@ function AddForm(props) {
             <label htmlFor="age-input">Age</label>
             <input
                 id='age-input'
-                type='text'
+                type='number'
                 name='age'
                 placeholder='Enter age...'
                 value={input.age}

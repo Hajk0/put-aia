@@ -69,7 +69,7 @@ function EditForm(props) {
             <label htmlFor="age-input">Age</label>
             <input
                 id='age-input'
-                type='text'
+                type='number'
                 name='age'
                 placeholder='Enter age...'
                 value={input.age}
@@ -105,7 +105,7 @@ function EditForm(props) {
                 <option value='4'>4</option>
                 <option value='5'>5</option>
             </select>
-            <button type='submit' onClick={handleSubmit}>Add</button>
+            <button type='submit' onClick={handleSubmit}>Submit</button>
             <button type='submit' onClick={handleCancel}>Cancel</button>
         </form>
     )
