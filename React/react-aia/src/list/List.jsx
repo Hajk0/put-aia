@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import data from '../data/data.json'
 import AddForm from './addForm/addForm'
+import Search from './search/search'
 
 function List() {
     const [input, setInput] = useState(
@@ -13,6 +14,8 @@ function List() {
     )
     const [people, setPeople] = useState(data.people)
     const [sort, setSort] = useState('default')
+    const [search, setSearch] = useState('')
+    const [searchBy, setSearchBy] = useState('name')
 
     const handleAdd = () => {
         const newPerson = {
@@ -73,6 +76,7 @@ function List() {
   return (
         <>
             <AddForm people={people} setPeople={setPeople} />
+            <Search setSearch={setSearch} setSearchBy={setSearchBy} />
 
             <div className="list-header">
                 <select 
@@ -121,19 +125,26 @@ function List() {
             <ul className='list'>
                 {
                     people.map(person => (
-                        <li key={person.id} className="list-item">
-                            <div className="item">{person.name}</div>
-                            <div className="item">{person.age}</div>
-                            <div className="item">{person.city}</div>
-                            <div className="item">
-                                <img className='photo' src={person.photo} alt={person.name + 's photo'} />
-                            </div>
-                            <div className='item'>{person.rating}</div>
-                            <div className="item">
-                                <button onClick={() => handleDelete(person.id)}>delete</button>
-                                <button>edit</button>
-                            </div>
-                        </li>
+                        (search.length == 0 || 
+                            searchBy === 'name' && person.name.includes(search) ||
+                            searchBy === 'rating' && person.rating.toString().includes(search) ||
+                            searchBy === 'city' && person.city.includes(search) ||
+                            searchBy === 'age' && person.age.toString().includes(search)
+                        ) ? (
+                            <li key={person.id} className="list-item">
+                                <div className="item">{person.name}</div>
+                                <div className="item">{person.age}</div>
+                                <div className="item">{person.city}</div>
+                                <div className="item">
+                                    <img className='photo' src={person.photo} alt={person.name + 's photo'} />
+                                </div>
+                                <div className='item'>{person.rating}</div>
+                                <div className="item">
+                                    <button onClick={() => handleDelete(person.id)}>delete</button>
+                                    <button>edit</button>
+                                </div>
+                            </li>
+                        ) : null
                     ))
                 }
             </ul>
