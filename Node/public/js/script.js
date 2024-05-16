@@ -1,21 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../css/styles.css">
-        <title>Node</title>
-    </head>
-    <body>
-        <header>
-            <a href="/checkout"><button id="checkout-button">Checkout</button></a>
-        </header>
-        <h1>Items</h1>
-        <ul id="items-list">
 
-        </ul>
 
-        <script>
             const items = JSON.parse('{{items}}');
 
             const itemList = document.getElementById('items-list');
@@ -25,14 +9,7 @@
                 console.log(`Adding item with ID ${itemId} to cart...`);
 
                 // Send HTTP request to server with item ID
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ itemId })
-                };
-                fetch(`/addToCart`, options)
+                fetch(`/addToCart/${itemId}`, { method: 'POST' })
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Failed to add item to cart');
@@ -47,6 +24,17 @@
             li.innerHTML = `${item.name}: $${item.price} <button id='add-to-cart-${item.id}' onclick="addToCart(${item.id})">Add to cart</button>`;
             itemList.appendChild(li);
             });
+
+/*
+        <script>
+            const items = JSON.parse('{{items}}');
+
+            const itemList = document.getElementById('items-list');
+
+            items.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `${item.name}: $${item.price} <button id='add-to-cart-${item.id}'>Add to cart</button>`;
+            itemList.appendChild(li);
+            });
         </script>
-    </body>
-</html>
+*/
