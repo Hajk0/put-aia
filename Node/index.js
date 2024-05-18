@@ -8,11 +8,12 @@ const port = 3000;
 app.use(express.static('public'));
 app.use(express.json(limit = '1mb'));
 
-shoppingCart = [];
+let shoppingCart = [];
+let items = [];
 
 app.get('/', async (req, res) => {
     try {
-        const items = await fetchData()
+        items = await fetchData()
         console.log(items)
 
         const data = await readFile('./public/html/index.html', 'utf8');
@@ -26,8 +27,21 @@ app.get('/', async (req, res) => {
 
 app.get('/checkout', async (req, res) => {
     try {
-        const data = await readFile('./public/html/about.html', 'utf8');
-        res.send(data);
+        const data = await readFile('./public/html/checkout.html', 'utf8');
+
+        const cardItems = shoppingCart.map(itemId => {
+            const item = items.find(item => item.id === itemId);
+            return {
+                id: item.id,
+                name: item.name,
+                price: item.price
+            }
+        });
+        console.log(cardItems);
+
+        const renderData = data.replace('{{cart}}', JSON.stringify(cardItems))
+
+        res.send(renderData);
     } catch (err) {
         res.send('Error');
     }
@@ -40,7 +54,10 @@ app.post('/addToCart', (req, res) => {
     // You can perform further validations here, e.g., if the item exists in the database
 
     // Add the item ID to the shopping cart
-    shoppingCart.push(itemId);
+    if (!shoppingCart.includes(itemId)) {
+        shoppingCart.push(itemId);
+    }
+    console.log(shoppingCart);
 
     // Send a response indicating success
     res.status(200).send('Item added to cart successfully');

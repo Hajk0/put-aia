@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/styles.css">
+        <title>Checkout</title>
+    </head>
+    <body>
+        <h1>Checkout</h1>
+        <ul id="cart-list">
+        </ul>
+        <script>
+            const cart = JSON.parse('{{cart}}');
+            const cartList = document.getElementById('cart-list');
+            cart.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `${item.name}: $${item.price}`;
+            cartList.appendChild(li);
+            });
+        </script>
+    </body>
+</html>
