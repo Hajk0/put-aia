@@ -10,12 +10,36 @@
         <h1>Checkout</h1>
         <ul id="cart-list">
         </ul>
+        <div>
+            <button id="checkout-button">Checkout</button>
+            <button id="cancel-button">Cancel</button>
+        </div>
         <script>
+            function removeFromCart(itemId) {
+                console.log(`Removing item with ID ${itemId} from cart...`);
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ itemId })
+                };
+                fetch(`/removeFromCart`, options)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to remove item from cart');
+                        }
+                        console.log('Item removed from cart successfully');
+                        window.location.reload();
+                    })
+                    .catch(error => console.error('Error removing item from cart:', error));
+            }
+
             const cart = JSON.parse('{{cart}}');
             const cartList = document.getElementById('cart-list');
             cart.forEach(item => {
             const li = document.createElement('li');
-            li.innerHTML = `${item.name}: $${item.price}`;
+            li.innerHTML = `${item.id}. ${item.name}: $${item.price} <button id='remove-from-cart-${item.id}' onclick='removeFromCart(${item.id})'>Remove from cart</button>`;
             cartList.appendChild(li);
             });
         </script>

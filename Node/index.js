@@ -63,6 +63,18 @@ app.post('/addToCart', (req, res) => {
     res.status(200).send('Item added to cart successfully');
 });
 
+app.post('/removeFromCart', (req, res) => {
+    console.log(req.body);
+    const itemId = req.body.itemId;
+    // You can perform further validations here, e.g., if the item exists in the database
+
+    shoppingCart = shoppingCart.filter(id => id !== itemId);
+    console.log(shoppingCart);
+
+    // Send a response indicating success
+    res.status(200).send('Item removed from cart successfully');
+});
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
