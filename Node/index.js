@@ -10,6 +10,7 @@ app.use(express.json(limit = '1mb'));
 
 let shoppingCart = [];
 let items = [];
+let message = 'Welcome to the store!';
 
 app.get('/', async (req, res) => {
     try {
@@ -19,7 +20,9 @@ app.get('/', async (req, res) => {
         const data = await readFile('./public/html/index.html', 'utf8');
 
         const renderData = data.replace('{{items}}', JSON.stringify(items))
+                                .replace('{{message}}', message);
         res.send(renderData);
+        message = 'Welcome to the store!';
     } catch (err) {
         res.send('Error');
     }
@@ -73,6 +76,13 @@ app.post('/removeFromCart', (req, res) => {
 
     // Send a response indicating success
     res.status(200).send('Item removed from cart successfully');
+});
+
+app.post('/cancelCheckout', (req, res) => {
+    console.log('Checkout cancelled:', shoppingCart);
+    shoppingCart = [];
+    res.status(200).send('Checkout cancelled successfully');
+    message = 'Checkout cancelled successfully';
 });
 
 

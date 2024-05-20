@@ -16,6 +16,13 @@
         </ul>
 
         <script>
+            const messageValue = '{{message}}';
+            console.log('Message:', messageValue);
+            const header = document.querySelector('header');
+            const message = document.createElement('h2');
+            message.innerText = messageValue;
+            header.appendChild(message);
+
             const items = JSON.parse('{{items}}');
 
             const itemList = document.getElementById('items-list');
