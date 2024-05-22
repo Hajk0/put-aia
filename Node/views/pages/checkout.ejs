@@ -20,8 +20,12 @@
             <% }) %>
         </ul>
         <div>
-            <button id="checkout-button">Checkout</button>
-            <button id="cancel-button">Cancel</button>
+            <form action="/doCheckout" method="POST">
+                <button type="submit">Checkout</button>
+            </form>
+            <form action="/cancelCheckout" method="POST">
+                <button id="cancel-button">Cancel</button>
+            </form>
         </div>
     </body>
 </html>
