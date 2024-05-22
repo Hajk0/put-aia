@@ -8,6 +8,10 @@ const port = 3000;
 app.use(express.static('public'));
 app.use(express.json(limit = '1mb'));
 
+app.set('view engine', 'ejs');
+app.set('views', './views');
+app.use(express.urlencoded({ extended: true }));
+
 let shoppingCart = [];
 let items = [];
 let message = 'Welcome to the store!';
@@ -17,12 +21,9 @@ app.get('/', async (req, res) => {
         items = await fetchData()
         console.log(items)
 
-        const data = await readFile('./public/html/index.html', 'utf8');
-
-        const renderData = data.replace('{{items}}', JSON.stringify(items))
-                                .replace('{{message}}', message);
-        res.send(renderData);
+        res.render('pages/index.ejs', {items: items, message: message});
         message = 'Welcome to the store!';
+        console.log('shoppingCart:', shoppingCart);
     } catch (err) {
         res.send('Error');
     }
@@ -30,21 +31,19 @@ app.get('/', async (req, res) => {
 
 app.get('/checkout', async (req, res) => {
     try {
-        const data = await readFile('./public/html/checkout.html', 'utf8');
-
         const cardItems = shoppingCart.map(itemId => {
-            const item = items.find(item => item.id === itemId);
+            console.log('itemId:', itemId);
+            const item = items.find((item) => (item.id == itemId));
+            console.log(item);
+            console.log('items:', items[0].id);
             return {
                 id: item.id,
                 name: item.name,
                 price: item.price
             }
         });
-        console.log(cardItems);
 
-        const renderData = data.replace('{{cart}}', JSON.stringify(cardItems))
-
-        res.send(renderData);
+        res.render('pages/checkout.ejs', {cart: cardItems});
     } catch (err) {
         res.send('Error');
     }
@@ -52,7 +51,7 @@ app.get('/checkout', async (req, res) => {
 
 // Route to handle adding an item to the cart
 app.post('/addToCart', (req, res) => {
-    console.log(req.body);
+    console.log('Shopping cart: ' + req.body.itemId);
     const itemId = req.body.itemId;
     // You can perform further validations here, e.g., if the item exists in the database
 
@@ -63,7 +62,8 @@ app.post('/addToCart', (req, res) => {
     console.log(shoppingCart);
 
     // Send a response indicating success
-    res.status(200).send('Item added to cart successfully');
+    // res.status(200).send('Item added to cart successfully');
+    res.redirect('/');
 });
 
 app.post('/removeFromCart', (req, res) => {
@@ -75,7 +75,8 @@ app.post('/removeFromCart', (req, res) => {
     console.log(shoppingCart);
 
     // Send a response indicating success
-    res.status(200).send('Item removed from cart successfully');
+    //res.status(200).send('Item removed from cart successfully');
+    res.redirect('/checkout')
 });
 
 app.post('/cancelCheckout', (req, res) => {
