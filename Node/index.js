@@ -19,10 +19,10 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-// let shoppingCart = [];
 let items = [];
 
 app.get('/', async (req, res) => {
+    req.session.itemNotAvaible = false
     try {
         items = await fetchData()
         console.log(items)
@@ -36,7 +36,23 @@ app.get('/', async (req, res) => {
 
 app.get('/checkout', async (req, res) => {
     try {
-        const shoppingCart = req.session.shoppingCart || [];
+        console.log('Checkout:', req.session.shoppingCart)
+        let shoppingCart = req.session.shoppingCart || [];
+
+        shoppingCart.forEach(cartItem => {
+            let itemAvaible = false
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                if (item.id == cartItem) {
+                    itemAvaible = true
+                }
+            }
+            if (!itemAvaible) {
+                shoppingCart = shoppingCart.filter(id => id != cartItem)
+                console.log('Item not avaible:', cartItem, 'shoppingCart:', shoppingCart)
+            }
+        });
+
         const cartItems = shoppingCart.map(itemId => {
             console.log('itemId:', itemId);
             const item = items.find((item) => (item.id == itemId));
@@ -48,8 +64,10 @@ app.get('/checkout', async (req, res) => {
             }
         });
 
-        res.render('pages/checkout.ejs', {cart: cartItems});
+        req.session.shoppingCart = shoppingCart;
+        res.render('pages/checkout.ejs', {cart: cartItems, itemNotAvaible: req.session.itemNotAvaible});
     } catch (err) {
+        console.error('Error:', err);
         res.send('Error');
     }
 });
@@ -105,17 +123,25 @@ app.post('/finalizeCheckout', async (req, res) => {
     console.log('Cart items:', cartItems)
     const itemsAvaible = await checkAmountInCart(cartItems)
     console.log('Items avaible: ', itemsAvaible)
+
     let count = 0
-    cartItems.forEach(item => {
-        count++
-    });
-
-    if (itemsAvaible == count) {
-        await deleteFromDatabase(cartItems)
-        req.session.shoppingCart = []
+    if (cartItems != undefined) {
+        cartItems.forEach(item => {
+            count++
+        });
+        if (itemsAvaible == count) {
+            await deleteFromDatabase(cartItems)
+            req.session.shoppingCart = []
+            req.session.message = 'Checkout finalized successfully.'
+            res.redirect('/')
+        } else {
+            req.session.itemNotAvaible = true
+            res.redirect('/checkout')
+        }
+    } else {
+        req.session.message = 'Add items to your shopping cart to finalize checkout.'
+        res.redirect('/')
     }
-
-    res.redirect('/')
 })
 
 
