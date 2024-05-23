@@ -8,9 +8,9 @@ CREATE TABLE IF NOT EXISTS Items (
     price DECIMAL(10, 2) NOT NULL
 );
 
-INSERT INTO Items (name, price) VALUES 
-('Laptop', 1500.00),
-('Smartphone', 800.00),
-('Tablet', 500.00),
-('Headphones', 100.00),
-('Mouse', 30.00);
+INSERT INTO Items (id, name, price) VALUES 
+(1, 'Laptop', 1500.00),
+(2, 'Smartphone', 800.00),
+(3, 'Tablet', 500.00),
+(4, 'Headphones', 100.00),
+(5, 'Mouse', 30.00);

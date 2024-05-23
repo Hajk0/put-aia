@@ -1,4 +1,4 @@
-const { fetchData } = require('./database')
+const { fetchData, checkAmountInCart, deleteFromDatabase } = require('./database')
 const express = require('express');
 const session = require('express-session');
 const {readFile} = require('fs').promises;
@@ -21,15 +21,14 @@ app.use(session({
 
 // let shoppingCart = [];
 let items = [];
-let message = 'Welcome to the store!';
 
 app.get('/', async (req, res) => {
     try {
         items = await fetchData()
         console.log(items)
+        const message = req.session.message || 'Welcome to the store!'
 
         res.render('pages/index.ejs', {items: items, message: message});
-        message = 'Welcome to the store!';
     } catch (err) {
         res.send('Error');
     }
@@ -38,7 +37,7 @@ app.get('/', async (req, res) => {
 app.get('/checkout', async (req, res) => {
     try {
         const shoppingCart = req.session.shoppingCart || [];
-        const cardItems = shoppingCart.map(itemId => {
+        const cartItems = shoppingCart.map(itemId => {
             console.log('itemId:', itemId);
             const item = items.find((item) => (item.id == itemId));
             console.log(item);
@@ -49,7 +48,7 @@ app.get('/checkout', async (req, res) => {
             }
         });
 
-        res.render('pages/checkout.ejs', {cart: cardItems});
+        res.render('pages/checkout.ejs', {cart: cartItems});
     } catch (err) {
         res.send('Error');
     }
@@ -91,12 +90,33 @@ app.post('/removeFromCart', (req, res) => {
 });
 
 app.post('/cancelCheckout', (req, res) => {
-    console.log('Checkout cancelled:', req.session.shoppingCart);
     req.session.shoppingCart = [];
     // res.status(200).send('Checkout cancelled successfully');
+
+    req.session.message = 'Checkout cancelled successfully.';
     res.redirect('/');
-    message = 'Checkout cancelled successfully';
+
+    console.log('Checkout cancelled:', req.session.message);
 });
+
+app.post('/finalizeCheckout', async (req, res) => {
+    // console.log('shoppingCart:', req.session.shoppingCart)
+    const cartItems = req.session.shoppingCart
+    console.log('Cart items:', cartItems)
+    const itemsAvaible = await checkAmountInCart(cartItems)
+    console.log('Items avaible: ', itemsAvaible)
+    let count = 0
+    cartItems.forEach(item => {
+        count++
+    });
+
+    if (itemsAvaible == count) {
+        await deleteFromDatabase(cartItems)
+        req.session.shoppingCart = []
+    }
+
+    res.redirect('/')
+})
 
 
 app.listen(port, () => {
