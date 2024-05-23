@@ -144,6 +144,10 @@ app.post('/finalizeCheckout', async (req, res) => {
     }
 })
 
+app.post('/back', (req, res) => {
+    res.redirect('/')
+})
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
