@@ -17,7 +17,7 @@ function AddForm(props) {
         event.preventDefault()
 
         const newPerson = {
-            id: props.people.length + 1,
+            id: props.people.length,
             name: input.name,
             age: input.age,
             city: input.city,
