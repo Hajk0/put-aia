@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Checkout</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Checkout</h1>
+        
+        <% if (itemNotAvaible) { %>
+            <div class="alert alert-danger">
+                <h2>Item not available</h2>
+            </div>
+        <% } %>
+        
+        <ul id="cart-list" class="list-group mb-4">
+            <% cart.forEach(item => { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><%= item.name %>: $<%= item.price %></span>
+                    <form action="/removeFromCart" method="POST" class="mb-0">
+                        <input type="hidden" name="itemId" value="<%= item.id %>">
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
+        
+        <div class="d-flex justify-content-between">
+            <form action="/finalizeCheckout" method="POST">
+                <button type="submit" class="btn btn-success">Checkout</button>
+            </form>
+            <form action="/cancelCheckout" method="POST">
+                <button id="cancel-button" type="submit" class="btn btn-warning">Cancel</button>
+            </form>
+            <form action="/back" method="POST">
+                <button type="submit" class="btn btn-secondary">Back</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

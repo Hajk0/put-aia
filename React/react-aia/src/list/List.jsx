@@ -21,7 +21,13 @@ function List() {
 
     const handleDelete = (id) => {
         const newPeople = people.filter(person => person.id !== id)
-        setPeople(newPeople)
+        const updatedPeople = newPeople.map((person, index) => ({
+            ...person,
+            id: index,
+        }));
+    
+        setPeople(updatedPeople);
+        //setPeople(newPeople)
     }
 
     const handleEdit = (id) => {

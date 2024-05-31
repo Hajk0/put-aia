@@ -36,12 +36,44 @@ async function createItem(name, price) {
     return result
 }
 
+async function checkAmountInCart(cart) {
+    if (!cart)
+        return 0
+    try {
+        const placeholders = cart.map(() => '?').join(',')
+        console.log('placeholders:', placeholders)
+        const [amount] = await pool.query(`
+            SELECT COUNT(*) AS amount
+            FROM items
+            WHERE id IN (${placeholders})
+        `, cart)
+        return amount[0].amount
+    } catch (error) {
+        console.error('Error selecting cart data:', error)
+        return 0
+    }
+}
+
+async function deleteFromDatabase(cart) {
+    try {
+        const placeholders = cart.map(() => '?').join(',')
+        const query = await pool.query(`
+            DELETE FROM items
+            WHERE id IN (${placeholders})
+        `, cart)
+    } catch (error) {
+        console.error('Error deleting from database')
+    }
+}
+
 async function main() {
     const items = await fetchData()
     console.log(items)
     const item = await getItem(1)
     console.log(item)
+    const amount = await checkAmountInCart(['1', '2', '3'])
+    console.log(amount)
 }
 
 // main()
-module.exports = { fetchData }
+module.exports = { fetchData, checkAmountInCart, deleteFromDatabase }
